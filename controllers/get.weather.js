@@ -11,7 +11,9 @@ module.exports = {
         .send(currentWeather)
    })
    .catch(function(err) {
-      console.log(err)
+      res
+        .status(400)
+        .send(err)
    })
   }
 }
