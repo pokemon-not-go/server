@@ -1,13 +1,18 @@
 const axios = require('axios')
 
 module.exports = {
-  getYesOrNo: function () {
+  getYesOrNo: (req, res) => {
     axios.get('https://yesno.wtf/api')
-      .then(function (response) {
-        console.log(response.data.answer)
+      .then(response => {
+        res.send(200).json({
+          data: response.data.answer
+        })
       })
-      .catch(function (err) {
-        console.log(err)
+      .catch((err) => {
+        res.send(400).json({
+          err
+        })
+
       })
   }
 }
