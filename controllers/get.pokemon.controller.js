@@ -1,55 +1,48 @@
 const axios    = require('axios')
-const { pokemonHelper } = require('../helpers/pokemonHelper')
+
+const pokeWater = ['squirtle', 'psyduck', 'poliwag', 'magikarp', 'gyarados']
+const pokeFire = ['charmander', 'magmar', 'charizard', 'vulpix', 'growlithe']
+const pokeDark = ['rattata', 'meowth', 'raticate', 'umbreon', 'absol']
+const pokeBug = ['caterpie', 'metapod', 'pinsir', 'beedrill', 'venomoth']
+const pokeElec = ['pikachu', 'magnemite', 'raichu', 'zapdos', 'voltorb']
+
 
 module.exports = {
   getPokemon: (req, res) => {
-    let random = Math.floor((Math.random() * 30) + 1)
+    let random = Math.round(Math.random() * 4)
     let weather = req.body.weather
+    let pokemon = ''
 
-    let pokemonType = ''
     if(weather == 'Rain'){
-      pokemonType = 'Water'
+      pokemon = pokeWater[random]      
     } else if (weather == 'Clear'){
-      pokemonType = 'Fire'
+      pokemon = pokeFire[random]
     } else if (weather == 'Clouds'){
-      pokemonType = 'Dark'
+      pokemon = pokeDark[random]
     } else if (weather == 'Drizzle'){
-      pokemonType = 'Bug'
+      pokemon = pokeBug[random]
     } else if (weather == 'Thunderstorm'){
-      pokemonType = 'Electric'
+      pokemon = pokeElec[random]
     }
 
-    axios.get(`https://pokeapi.bastionbot.org/v1/pokemon/${random}`)
-      .then(response => {
-        let pokemon = {
+    axios.get(`https://pokeapi.bastionbot.org/v1/pokemon/${pokemon}`)
+    .then(response => {
+        let pokemonData = {
           name: response.data[0].name,
           types: response.data[0].types,
           sprite: response.data[0].sprite
         }
-
-        let pokemonShow = {}
-        pokemon.types.forEach(types => {
-          console.log(types)
-          if(types == pokemonType) {
-            pokemonShow = pokemon
-          }
-        })
-
-        if(Object.keys(pokemonShow).length == 0) {
-            console.log('masuk kesini')
-            pokemonHelper
-        } else {
-          res.status(200).json({
+        console.log('masuk then')
+        res.status(200).json({
             message: 'Success generate pokemon',
-            data: pokemonShow
-          })
-        }
-
+            data: pokemonData
       })
-      // .catch(error => {
-      //   res.status(400).json({
-      //     message: 'error pak!'
-      //   })
-      // })
+    })
+    .catch(error => {
+        console.log('masuk catch')
+        res.status(400).json({
+          message: 'error pak!'
+        })
+    })
   }
 }
