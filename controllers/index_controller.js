@@ -37,6 +37,7 @@ module.exports = {
         let token = jwt.sign({userId: userData._id, name: userData.name}, process.env.SECRET)
         res.status(200).json({
           message: 'Success login',
+          data: userData,
           token: token
         })
       }
@@ -64,7 +65,7 @@ module.exports = {
       })
     })
   },
-  getWeather: (req, res) => {
+  getWeather (req, res) {
     axios.get(`http://api.openweathermap.org/data/2.5/weather?q=Jakarta&appid=${process.env.TOKEN_WEATHER}`)
       .then((response) => {
         res.status(200).json({
@@ -77,5 +78,5 @@ module.exports = {
           err
         })
       })
-  },
+  }
 }

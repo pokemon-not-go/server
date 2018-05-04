@@ -1,9 +1,9 @@
 const router = require('express').Router()
-const { loginUser, getWeather, getUserData } = require('../controllers/index_controller')
+const { loginUser, getUserData, getWeather } = require('../controllers/index_controller')
 
 router.post('/login', loginUser)
 
-router.post('/weather', getWeather)
+router.get('/weather', getWeather)
 
 router.get('/user/:id', getUserData)
 
