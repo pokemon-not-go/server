@@ -48,6 +48,22 @@ module.exports = {
       })
     })
   },
+  getUserData (req, res) {
+    let userId = req.params.id
+    User.findById({_id: userId})
+    .then(function(userData){
+      res.status(200).json({
+        message: 'Successfully get user data',
+        data: userData
+      })
+    })
+    .catch(function(err){
+      res.status(500).json({
+        message: 'Error while getting user data',
+        error: err
+      })
+    })
+  },
   getWeather: (req, res) => {
     axios.get(`http://api.openweathermap.org/data/2.5/weather?q=Jakarta&appid=${process.env.TOKEN_WEATHER}`)
       .then((response) => {
@@ -62,22 +78,4 @@ module.exports = {
         })
       })
   },
-  catchPokemon (req, res) {
-    let pokemon = req.body.pokemon
-    let userId = req.body.id
-
-    User.updateOne({_id: id}, {pokemon: pokemon})
-    .then(function(result){
-      res.status(200).json({
-        message: 'Success capture a pokemon',
-        result: result
-      })
-    })
-    .catch(function(err){
-      res.status(500).json({
-        message: 'error occured when updating data',
-        error: err
-      })
-    })
-  }
 }
